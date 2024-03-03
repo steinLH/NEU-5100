@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+//修改测试 2024
+
 public class test {
 	  public static void main(String[] args) {
 	    m(new GraduateStudent());
