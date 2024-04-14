@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="738.0" prefWidth="1024.0" style="-fx-background-insets: 50; -fx-background-color: white;" translateY="-30.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,12 +25,6 @@
                   <Font name="Arial" size="15.0" />
                </font>
             </Text>
-            <TextField layoutX="337.0" layoutY="195.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter user name" />
-            <PasswordField layoutX="337.0" layoutY="250.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter your email" />
-            <Button layoutX="462.0" layoutY="560.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Save" textFill="#1f389e" />
-            <PasswordField layoutX="337.0" layoutY="305.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter your location" />
-            <PasswordField layoutX="337.0" layoutY="365.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter name" />
-            <PasswordField layoutX="337.0" layoutY="420.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter breed" />
             <Text fill="#000003ad" layoutX="337.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="400.0">
                <font>
                   <Font name="Arial" size="15.0" />
@@ -56,7 +50,25 @@
                   <Font name="Arial" size="15.0" />
                </font>
             </Text>
-            <PasswordField layoutX="337.0" layoutY="475.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter age" />
+            <Text fill="#000003ad" layoutX="337.0" layoutY="525.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="400.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Text>
+            <Text fill="#000003ad" layoutX="337.0" layoutY="580.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Re-enter Password" wrappingWidth="400.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Text>            
+            <TextField layoutX="337.0" layoutY="195.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter user name" />
+            <TextField layoutX="337.0" layoutY="250.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter your email" />
+            <PasswordField fx:id="passwordField" layoutX="337.0" layoutY="530.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter user password" />
+            <PasswordField layoutX="337.0" layoutY="585.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter user password agian" />
+            <TextField layoutX="337.0" layoutY="305.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter your location" />
+            <TextField layoutX="337.0" layoutY="365.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter name" />
+            <TextField layoutX="337.0" layoutY="420.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter breed" />
+            <TextField layoutX="337.0" layoutY="475.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" promptText="Enter age" />
+            <Button fx:id="signUpButton" layoutX="462.0" layoutY="650.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="30.0" prefWidth="100.0" text="Save" textFill="#1f389e" />
          </children>
       </AnchorPane>
    </center>
