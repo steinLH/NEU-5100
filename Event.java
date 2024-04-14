@@ -45,6 +45,9 @@ public class Event {
     public static void main(String[] args) throws ParseException, ClassNotFoundException, SQLException {
         
     	Event event = new Event();
+    	Event eventFilter = new Event();
+    	List<Event> eventList = new ArrayList<>();
+
     	Profile profile = new Profile();
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	event.date = dateFormat.parse("2024-03-15 12:30:00"); 
@@ -56,7 +59,7 @@ public class Event {
 		event.timeStart = Time.valueOf("11:30:00");
 		event.timeEnd = Time.valueOf("14:30:00");
 		event.place = "Mountain View Park";
-		event.sponsorId = 1;
+		event.sponsorId = 1; //当user是发起人则是sponsor，如果是参与者则为partIdList
 		event.sponsorName = "kara2";
 		event.sponsorPetId = 1;
 		event.sponsorPetName = "Wangcai2";
@@ -82,8 +85,10 @@ public class Event {
             //updateEvent(connection, event);
             getEvent(connection,event);
             //cancelEvent(connection,event);
-            partEvent(connection,event,profile);
-            getEvent(connection,event);
+            //partEvent(connection,event,profile);
+            //getEvent(connection,event);
+            //removeFromPartList
+            eventList = getEventList(connection,eventFilter);
 
 
  
@@ -127,7 +132,7 @@ public class Event {
         }
         return hashMap;
     } 
-    public static String[] removePartList(Map<Integer,String> hashMap) {
+    public static String[] removeFromPartList(Map<Integer,String> hashMap) {
     	String[] strArray = {};
         if (hashMap.containsKey(10)) {
             System.out.println( " ID is in the map.");
@@ -176,7 +181,7 @@ public class Event {
         
 	}
 	
-	public static void cancelPartEvent(Connection connection,Event event) {
+	public static void cancelPartEvent(Connection connection,Event event,Profile profile) {
         PreparedStatement selectStatement = null;
         PreparedStatement updateStatement = null;
         try {
@@ -199,8 +204,8 @@ public class Event {
             			+ "where eventId = ?";
                 updateStatement = connection.prepareStatement(updateSql);
                 updateStatement.setString(1, Integer.toString(event.partNum-1));
-                updateStatement.setString(2, event.partIdList+",8");
-                updateStatement.setString(3, event.partNameList+",QQ");
+                updateStatement.setString(2, event.partIdList+","+profile.id);
+                updateStatement.setString(3, event.partNameList+","+profile.name);
                 updateStatement.setString(4, Integer.toString(event.eventId));
 
                 
@@ -239,7 +244,7 @@ public class Event {
                 updateStatement.setString(1, event.eventTitle);
                 updateStatement.setString(2, event.eventDetail);
                 updateStatement.setString(3, "");
-                updateStatement.setString(4, "2024-03-10 12:36:00");
+                updateStatement.setString(4, dateFormat.format(event.date));
                 updateStatement.setString(5, String.valueOf(event.timeStart));
                 updateStatement.setString(6, String.valueOf(event.timeEnd));
                 updateStatement.setString(7, event.place);
@@ -272,7 +277,7 @@ public class Event {
                 insertStatement.setString(1, event.eventTitle);
                 insertStatement.setString(2, event.eventDetail);
                 insertStatement.setString(3, "");
-                insertStatement.setString(4, "2024-03-10 12:36:00");
+                insertStatement.setString(4, dateFormat.format(event.date));
                 insertStatement.setString(5, String.valueOf(event.timeStart));
                 insertStatement.setString(6, String.valueOf(event.timeEnd));
                 insertStatement.setString(7, event.place);
@@ -389,8 +394,6 @@ public class Event {
 
             ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
-            	String table_cols= "eventtitle, eventdetail, eventpicurl, date, timestart, timeend, place, sponsorid, sponsorname,sponsorpetid, "
-            			+ "sponsorpetname, partnum, partidlist, partnamelist, partstatuslist, likenum, unlikenum, favoritenum, createdate,upatedate, status";
                 System.out.println("ID: " + resultSet.getInt("eventid"));
                 
                 Field[] fields = event.getClass().getDeclaredFields();
@@ -401,15 +404,86 @@ public class Event {
 
                 
             } else {
-            	//
+                System.out.println(" 0 record found !");
             }
-            System.out.print("SQLquery OK");
+            System.out.println("SQLquery OK");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-		
+	}
+    	public static List<Event> getEventList(Connection connection,Event eventFilter) throws IllegalArgumentException {
+            PreparedStatement selectStatement = null;
+        	List<Event> eventList = new ArrayList<>();
+        	
+            try {
+                
+                System.out.println("");
+                System.out.println("getEventList");
+
+            	StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM event WHERE status = ? ");
+                if (eventFilter.place != null && !eventFilter.place.isEmpty()) {
+                    sqlBuilder.append(" AND place LIKE ?");
+                }
+                selectStatement = connection.prepareStatement(sqlBuilder.toString());
+                int parameterIndex = 1;
+            	selectStatement.setString(parameterIndex++, "Active");
+
+                if (eventFilter.place != null && !eventFilter.place.isEmpty()) {
+                	selectStatement.setString(parameterIndex++, "%" + eventFilter.place + "%");
+                }
+
+                ResultSet resultSet = selectStatement.executeQuery();
+                
+                if (resultSet.next()) {
+                	Event event = new Event();
+                    System.out.println("ID: " + resultSet.getInt("eventid"));
+                    
+                    Field[] fields = event.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        field.setAccessible(true); // 设置可访问私有字段
+                        System.out.println(field.getName() + ": " + field.get(event));
+                    }
+                    
+            		event.eventId = resultSet.getInt("eventid");
+            		event.eventTitle = resultSet.getString("eventTitle");
+            		event.eventDetail = resultSet.getString("eventDetail");
+            		event.eventPicUrl = resultSet.getString("eventPicUrl");
+            		event.date = resultSet.getDate("date");
+            		event.timeStart = resultSet.getTime("timeStart");
+            		event.timeEnd = resultSet.getTime("timeEnd");
+            		event.place = resultSet.getString("place");
+            		event.sponsorId = resultSet.getInt("sponsorId");
+            		event.sponsorName = resultSet.getString("sponsorName");
+            		event.sponsorPetId = resultSet.getInt("sponsorPetId");
+            		event.sponsorPetName = resultSet.getString("sponsorPetName");
+            		event.partNum = resultSet.getInt("partNum");
+            		event.partIdList = resultSet.getString("partIdList");
+            		event.partNameList = resultSet.getString("partNameList");
+            		event.partStatusList = resultSet.getString("partStatusList");
+            		event.likeNum = resultSet.getInt("likeNum");
+            		event.favoriteNum = resultSet.getInt("favoriteNum");
+            		event.unLikeNum = resultSet.getInt("unLikeNum");
+            		event.createDate = resultSet.getDate("createDate");
+            		event.upateDate = resultSet.getDate("upateDate");
+            		event.status = resultSet.getString("status");
+            		
+            		eventList.add(event);
+                    
+                } else {
+                	System.out.println(" 0 record found !");
+                }
+                System.out.print("SQLquery OK");
+                                
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            
+            return eventList;
+
 	} 
 
 
