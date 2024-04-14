@@ -33,11 +33,16 @@ public class LoginPageController {
     private void initialize() {
         signUpLink.setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(Main.class.getResource("fxml/signUpPage.fxml"));
-                Parent signUpRoot = loader.load();
+                FXMLLoader signUploader = new FXMLLoader(Main.class.getResource("fxml/signUpPage.fxml"));
+                signUploader.setController(new SignUpPageController());
+                Parent signUpRoot = signUploader.load();
                 Scene signUpScene = new Scene(signUpRoot);
-                Stage stage = (Stage) signUpLink.getScene().getWindow();
+                Stage stage = new Stage();
                 stage.setScene(signUpScene);
+     		    stage.setTitle("SignUp Page");
+     		    stage.show();
+    		    System.out.println("login > SignUp");
+
             } catch (IOException e) {
                 e.printStackTrace();
                 // Handle any exceptions
@@ -81,6 +86,21 @@ public class LoginPageController {
  		    stage.setTitle("Home Page");
  		    stage.show();
  		}
-    
+
+ 	    @FXML
+ 		 public static void handleSignUp() throws IOException {
+ 			    // Load the signUp page
+ 			    FXMLLoader signUpLoader = new FXMLLoader(Main.class.getResource("fxml/homePage.fxml"));
+ 			    signUpLoader.setController(new HomePageController());
+ 			    Parent signUpRoot = signUpLoader.load();
+ 			    Scene signUpScene = new Scene(signUpRoot);
+
+ 			    // Set the stage with the home scene
+ 			    Stage stage = new Stage();
+ 			    stage.setScene(signUpScene);
+ 			    stage.setTitle("home Page");
+ 			    stage.show();
+ 			    System.out.println("handleSignUp");
+ 			}
     
 }
