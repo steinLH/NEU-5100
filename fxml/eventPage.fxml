@@ -74,11 +74,12 @@
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </TextArea>
-            <Button layoutX="498.0" layoutY="236.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="83.0" text="RSVP">
+            <Button fx:id="rsvpButton" layoutX="498.0" layoutY="236.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="83.0" onAction="#handleRsvp" text="RSVP">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
+            
             <TextArea layoutX="54.0" layoutY="311.0" prefHeight="159.0" prefWidth="972.0" text="&#10;&#10;-Leash Requirement: All dogs must be leashed throughout the event to ensure safety and order.&#10;&#10;-Cleanup Duty: Please bring your own dog waste bags and ensure you leave no trace." wrapText="true">
                <font>
                   <Font name="Segoe UI" size="18.0" />
